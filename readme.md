@@ -130,3 +130,74 @@ const user = await userModel.findOne({ _id: req.query });
   so for this case it's better to use findOne method
 
 ---
+
+### 4.delete an item from all collections data (DELETE request)
+
+for delete one single item from data base
+`model.findOneAndDelete()`
+
+```javascript
+import userModel from "path";
+
+const user = await userModel.findOneAndDelete({ _id: req.query });
+```
+
+---
+
+### 5.update an item from all collections data (PUT request)
+
+for delete one single item from data base
+`model.findOneAndUpdate()`
+
+```javascript
+import userModel from "path";
+
+const user = await userModel.findOneAndUpdate(
+  { _id: req.query },
+  { username, email, password }
+);
+```
+
+---
+
+### validate user ObjectID
+
+````javascript
+import { isValidObjectId } from "mongoose";
+
+if (!isValidObjectId(req.query)) {
+  const user = await userModel.findOneAndDelete({ _id: req.query });
+}
+```### How to use this collections in SSR & SSG
+
+```javascript
+import connectToDb from "path";
+import usersModel from "path";
+export async function getStaticProps() {
+  connectToDb();
+  const users = await usersModel.find();
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+    },
+  };
+}
+````
+
+---
+
+### How to use this collections in SSR & SSG
+
+```javascript
+import connectToDb from "path";
+import usersModel from "path";
+export async function getStaticProps() {
+  connectToDb();
+  const users = await usersModel.find();
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+    },
+  };
+}
+```
