@@ -103,3 +103,30 @@ import userModel from "path";
 const users = await userModel.find();
 return res.status(200).json({ message: "Get All users successfuly", users });
 ```
+
+---
+
+### 3.get Single object from all collections data (single GET request)
+
+- for catch one single object from model:
+  notice for dev this function handler api we need dynamic path also
+  cause we get id from req.query
+
+`[id].js`
+
+in handler function we get this params from:
+`req.query`
+
+```javascript
+import userModel from "path";
+const user = await userModel.findOne({ _id: req.query });
+```
+
+- you can also do this with find method
+  **find vs findOne**
+  if we search for 2 for example username
+  find return array of object with all same searchs
+  but findOne returns first object that find
+  so for this case it's better to use findOne method
+
+---
