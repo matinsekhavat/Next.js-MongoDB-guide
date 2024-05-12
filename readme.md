@@ -281,3 +281,26 @@ const teacherModel = require("./teacherModel");
 ```
 
 ---
+
+### select or remove specific fileds that comes from relations data
+
+- sometime we dont need all keys & values
+  wo how to delete one item or only get one key or 2 key ...
+
+_if we want to say we need all data expect one of them we say "-price"_
+
+```javascript
+const users = await usersModle.find({}, "-__v0");
+```
+
+_if we want to say we need one of them we say "price email"_
+
+```javascript
+const users = await usersModle.find({}, "_id email");
+or;
+const courses = await coursesModel
+  .find({}, "-price")
+  .populate("xyz", "_id -updatedAt");
+```
+
+---
