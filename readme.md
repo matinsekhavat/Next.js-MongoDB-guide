@@ -2,7 +2,7 @@
 
 ---
 
-# Connect To MongoDB
+# 1.Connect To MongoDB
 
 - First we should install mongoose package from npm
   then we should make utils function to connect file to db
@@ -463,3 +463,5 @@ export const config = {
 ```
 
 ---
+
+# 2.Authenticating in Backend
