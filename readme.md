@@ -229,3 +229,55 @@ const usersModel = mongoose.models.User || mongoose.model("User", schema);
 //if exist dont make it twice
 export default usersModel;
 ```
+
+---
+
+### make relation in MongoDB
+
+we use another key and value key is for example :
+`teacher : ObjectID("")`
+
+with this we make realtion
+but how to write the schema?
+
+```javascript
+teacher : {
+ type : mongoose.Types.ObjectId,
+ ref:"Teacher"
+ required :true
+}
+```
+
+- here ref means this ObjectId is for which models?
+- so in the ouptput we have problem we received datas from api like this
+  `{teacher : "jdfbi475bdewb34i0"}`
+- we dont want this so we want instaed of real id => shows us the {} that related to this key
+
+##### for fix that : Populate()
+
+```javascript
+const courses = await coursesModel.find({}).populate("KEY in object");
+```
+
+for example here
+
+```javascript
+xyz : {
+ type : mongoose.Types.ObjectId,
+ ref:"Teacher"
+ required :true
+}
+
+=====>
+const courses = await coursesModel.find({}).populate("xyz");
+//the key value in scheme object
+
+```
+
+in schema file also we should require teacherModel that we user theire data for relation in schema file
+
+```javascript
+const teacherModel = require("./teacherModel");
+```
+
+---
