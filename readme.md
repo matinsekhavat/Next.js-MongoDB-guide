@@ -201,3 +201,31 @@ export async function getStaticProps() {
   };
 }
 ```
+
+---
+
+### timestamp & date
+
+- for adding createdAt and updatedAt key and values
+
+```javascript
+const schema = mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+  },
+  email: {
+    required: true,
+    type: String,
+  },
+  password: {
+    required: true,
+    type: String,
+    minLength: 8,
+  },
+}, timestamps : true);
+// Capital&unplural
+const usersModel = mongoose.models.User || mongoose.model("User", schema);
+//if exist dont make it twice
+export default usersModel;
+```
