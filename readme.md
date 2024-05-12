@@ -345,3 +345,74 @@ so first we get teached Schema
 const mainSchema = await teachersModel.findOne({ _id: req.body.id });
 const courses = await courseModel.create({ email, teacher: mainSchema });
 ```
+
+---
+
+### virtual relation
+
+- when we create our schema after that we can say
+  virtual relation is all about optimization in Database so in genrall our relation is not created but when you sent req in our response we can see the final result
+
+```javascript
+const { commentsModel } = require("./comments");
+schema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "course", // اون اسکیمایی که توش هستی
+});
+```
+
+localfield is main model you are in there you say look at \_id in this file and connect to another model is foreignField we say "course"
+
+when you want to recieve that you say
+
+```javascript
+const course = await courseModel
+  .findOne({})
+  .populate("name u enter in virtual || comments")
+  .lean(); // return as array of obj
+```
+
+---
+
+### validator package
+
+- we can use validator package to validate our data
+  `fastest-validator`
+
+```javascript
+const Validator = require("fastest-validator");
+const v = new Validator();
+const schema = {
+  title: { type: "string", min: 8, max: 100 },
+  price: { type: "number", minLength: 0, psitive: true },
+};
+const check = v.complie(schema);
+export default check
+====>
+import courseValidator from "@/validators/course"
+const validationResult = courseValidator(req.body)
+if(validationResult !== true){
+  return res.status(422).json(validationResult)
+}
+//if everything is alright return => true
+//if not , we have problem while validating return {}
+```
+
+- so with this package our DB never crash
+
+---
+
+### work With MongoSH
+
+- for make change and insert or get and ...inside the mongoCompass GUI
+
+> for see how many database we already have :`show dbs`
+> for select data base we say : `use <your-DataBase-Name>`
+
+- so we in our database we have some collections
+  we say : `db.<collection-name>.find({})`
+  or
+  `db.teachers.insertOne({SCHEMA})`
+
+---
