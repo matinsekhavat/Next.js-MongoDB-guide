@@ -234,6 +234,12 @@ export default usersModel;
 
 ### make relation in MongoDB
 
+<ul>
+<li>One to One</li>
+<li>One to Many</li>
+<li>Many to Many</li>
+</ul>
+
 we use another key and value key is for example :
 `teacher : ObjectID("")`
 
@@ -304,3 +310,38 @@ const courses = await coursesModel
 ```
 
 ---
+
+### kind of Relations in MongoDB
+
+<ul>
+<li>Refrence</li>
+<li>Embedded</li>
+</ul>
+- in past examle we user ref : "" to ref that collection model
+we have another way to make relation we called embedded
+
+##### Embedded Relation
+
+for make Embedded realtion when we use our schema we export that
+
+```javascript
+export const teacherSchema = mongoose.Schema({});
+
+======>
+const teacherModel = require("./teacherModel");
+const courseSchema = mongoose.Schema({
+  teacher: {
+    type: teacherModel,
+    required: true,
+  },
+})
+
+```
+
+but here we need all teacher schema structure
+so first we get teached Schema
+
+```javascript
+const mainSchema = await teachersModel.findOne({ _id: req.body.id });
+const courses = await courseModel.create({ email, teacher: mainSchema });
+```
