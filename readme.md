@@ -436,4 +436,30 @@ export function middleware(request) {
 
 we can also recieve users Cookis
 
-`request.cookies.get("")`
+## `request.cookies.get("")`
+
+### matcher in MiddleWare
+
+- we apple to this middlewares function execute in specific pages we want not into all pages
+
+```javascript
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  return NextResponse.redirect(new URL("/home", request.url));
+}
+
+// See "Matching Paths" below to learn more
+export const config = {
+  matcher: "/about", // this middleware only execute when you are in /about routes
+};
+
+//for all routes in specific path
+//matcher : "/panel/:path*"
+//or array
+// matcher : ["/user", "/panel"]
+```
+
+---
