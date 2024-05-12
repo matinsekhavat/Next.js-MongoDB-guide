@@ -416,3 +416,24 @@ if(validationResult !== true){
   `db.teachers.insertOne({SCHEMA})`
 
 ---
+
+### Middlewares in next js
+
+- security checking for exmaple everybody can not access to some private routes
+  in this structure we `import NextResponse from "next/server"`
+  we made `middleware.js` file in root of project
+
+```javascript
+import { NextResponse } from "next/server";
+export function middleware(request) {
+  if (request.nextUrl.pathname.startsWith("/users")) {
+    //Validation if everything was ok so the NextResponse.next() will be execute
+    return NextResponse.redirect(new URL("/login", request.url)); // dont return default so retun and redirect
+  }
+  return NextResponse.next(); //in default this code execute
+}
+```
+
+we can also recieve users Cookis
+
+`request.cookies.get("")`
