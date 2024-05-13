@@ -464,4 +464,30 @@ export const config = {
 
 ---
 
+### .env files
+
+.env files is more safe place to write forexmaple our ports or our apiKeys there
+
+- 1.make `.env` files in root of project
+
+```javascript
+API_KEY = sdkndfkdfn;
+```
+
+- for access we say `proccess.env.API_KEY`
+
+---
+
+---
+
 # 2.Authenticating in Backend
+
+> packages we review in this document :
+
+<ul>
+  <li><a href="https://www.npmjs.com/package/bcryptjs">Hash-Password</a></li>
+  <li><a href="https://www.npmjs.com/package/jsonwebtoken">JWT</a></li>
+  <li><a href="https://www.npmjs.com/package/cookie">Cookies-manager</a></li>
+</ul>
+here we gonna to talk about all user auth and sign-in and sign-up
+---
