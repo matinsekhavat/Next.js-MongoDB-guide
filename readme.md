@@ -501,3 +501,18 @@ here we gonna to talk about all user auth and sign-in and sign-up
 1. Header
 2. Payload
 3. verify signature
+
+---
+
+### correct way to Authenticate user
+
+in real Next.js project we need 3 Routes:
+
+- routes (Auth)
+
+1. Login (sign-in)
+2. register(signup)
+3. getme(get user info)
+4. logout
+
+---
