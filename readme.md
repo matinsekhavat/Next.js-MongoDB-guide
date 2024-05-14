@@ -491,3 +491,13 @@ API_KEY = sdkndfkdfn;
 </ul>
 here we gonna to talk about all user auth and sign-in and sign-up
 ---
+
+### JWT
+
+- jwt is stand for JSON web Token , it's a library that helps us to make JWT we should not iclude neccessary data in token
+  for example we can include user email to verify him with just email.
+  jwt is made with 3 part :
+
+1. Header
+2. Payload
+3. verify signature
