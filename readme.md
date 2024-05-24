@@ -132,6 +132,14 @@ const user = await userModel.findOne({ _id: req.query });
   but findOne returns first object that find
   so for this case it's better to use findOne method
 
+- search between to values while find
+
+```javascript
+const isUserExist = await UserModel.findOne({
+  $or: [{ username }, { email }],
+});
+```
+
 ---
 
 ### 4.delete an item from all collections data (DELETE request)
@@ -520,7 +528,7 @@ in real Next.js project we need 3 Routes:
 
 ---
 
-### 1. sign-in
+### 1. sign-up
 
 at first wo need create this path `api>auth` cause all of feature we want to add it's authenticate
 then
@@ -557,7 +565,7 @@ export default connectToDB;
 
 ---
 
-signin mechanism :
+signup mechanism :
 `models>User.js`
 code in User.js :
 
@@ -603,10 +611,10 @@ export default model;
 
 > so in sign-in progress we should check some important things :
 
-- we should check if the user is already exist in the database or not so if the username or email exist we should give him a warn and prevent user to sign-in into our database
+- we should check if the user is already exist in the database or not so if the username or email exist we should give him a warn and prevent user to sign-up into our database
 - we should validate user data that comes from client
   one importatnt thing is when we recieve user password , we should not display user password as un-hashable password we should always hash user password already in database.(learn in next lecture)
-- then we should create one JWT for successful sign-in
+- then we should create one JWT for successful sign-up
 
 ```javascript
 export async function handler(req, res) {
@@ -631,6 +639,17 @@ export async function handler(req, res) {
       return res.status(422).json("data is Not valid");
     }
 
+    //isUserExist?
+    const isUserExist = await UserModel.findOne({
+      $or: [{ username }, { email }],
+    });
+
+    //isUserExist return {with pair keys and values} ==> truthy value
+    if (isUserExist) {
+      return res.status(422).json({ message: "user is Already exist" });
+    }
+
+    //create
     await UserModel.create({
       firstname,
       lastname,
@@ -640,8 +659,9 @@ export async function handler(req, res) {
       role: "USER",
     });
 
+    //return
     return res.status(201).json({ message: "user create successfuly" });
-    //isUserExist?
+
     //hash password
     //generate JWT
     //create
