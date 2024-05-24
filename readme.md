@@ -619,6 +619,8 @@ export default model;
 ```javascript
 //we should also import utils file
 import hashedPassword from "./utils/hashedPassword";
+import generateToken from "./utils/generateToken";
+
 export async function handler(req, res) {
   if (req.method !== "POST") {
     return null;
@@ -653,21 +655,21 @@ export async function handler(req, res) {
 
     //create
 
-    //hash password - in next lecture
-    const hashedPassVar =  await hashedPassword(password)
+    //create & hash password & Token
+
+    const hashedPassVar = await hashedPassword(password);
+    const token = generateToken({ email });
     await UserModel.create({
       firstname,
       lastname,
       username,
       email,
-      password :hashedPassVar
+      password: hashedPassVar,
       role: "USER",
     });
 
     //return
-    return res.status(201).json({ message: "user create successfuly" });
-
-
+    return res.status(201).json({ message: "user create successfuly", token });
 
     //generate JWT
     //create
@@ -702,4 +704,32 @@ async function hashedPassword(pass) {
   return hashedPass;
 }
 export default hashedPassword;
+```
+
+---
+
+### create JWT
+
+- this step when user signup successfuly into website we want to create a token and set into his browser
+
+1. so make a `utils>generateToken.js` file
+2. we should install <a href="https://www.npmjs.com/package/jsonwebtoken">JSON Web Toekn</a> package.
+
+_!NOTICE_ : for PrivateKey you should make a `.env` file and use your private Key inside that
+(in this document we talked about what is .env files)
+never use private key directly in the second argument of this sign Method
+
+```javascript
+import { sign } from "jsonwebtoken";
+export function generateToken(data) {
+  // first argument is all spread data we sent as a object
+  // second argument is a PRIVATE_KEY as a JWT signature for better and high security
+  // third argument is a some option.(for more details Read JWT Guideline)
+
+  const token = sign({ ...data }, process.env.PRIVATE_KEY, {
+    expiresIn: "24h",
+  });
+  //like : PRIVATE_KEY=knknpqzndbsqeuot
+  return token;
+}
 ```
