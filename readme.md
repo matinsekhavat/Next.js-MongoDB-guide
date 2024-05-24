@@ -683,8 +683,8 @@ export async function handler(req, res) {
 
 ### hash password in database
 
-- we should compile userpassword to unreadble password example:
-  real pasword is : 7976@ali
+- we should compile user password to unreadable password example:
+  real password is : 7976@ali
   we use bcryptjs packages to save this in database like : "sfkndwkfkkefndkfnf".
 
   ***
