@@ -617,6 +617,8 @@ export default model;
 - then we should create one JWT for successful sign-up
 
 ```javascript
+//we should also import utils file
+import hashedPassword from "./utils/hashedPassword";
 export async function handler(req, res) {
   if (req.method !== "POST") {
     return null;
@@ -650,23 +652,54 @@ export async function handler(req, res) {
     }
 
     //create
+
+    //hash password - in next lecture
+    const hashedPassVar =  await hashedPassword(password)
     await UserModel.create({
       firstname,
       lastname,
       username,
       email,
-      password,
+      password :hashedPassVar
       role: "USER",
     });
 
     //return
     return res.status(201).json({ message: "user create successfuly" });
 
-    //hash password
+
+
     //generate JWT
     //create
   } catch (error) {
     return res.status(500).json({ message: "unknown internal server error" });
   }
 }
+```
+
+---
+
+### hash password in database
+
+- we should compile userpassword to unreadble password example:
+  real pasword is : 7976@ali
+  we use bcryptjs packages to save this in database like : "sfkndwkfkkefndkfnf".
+
+  ***
+
+  <a href="https://www.npmjs.com/package/bcryptjs" target="_blank">bcryptjs - package</a>
+
+  1. npm i bcryptjs
+  2. make a utils function to hash password => `utils>hashedPassword.js`
+
+```javascript
+import { hash } from "bcryptjs";
+
+async function hashedPassword(pass) {
+  // first argument is our password(string)
+  // second argument is salt ==> default we set to : 12
+  const hashedPass = await hash(pass, 12);
+  return hashedPass;
+}
+export default hashedPassword;
 ```
