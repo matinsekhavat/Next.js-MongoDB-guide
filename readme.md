@@ -6,8 +6,11 @@
 
 - First we should install mongoose package from npm
   then we should make utils function to connect file to db
+  `configs>db.js`
 
 ```javascript
+const mongoose = require("mongoose");
+
 export default async function connectToDb() {
   try {
     if (mongoose.connections[0].readyState) {
@@ -23,7 +26,7 @@ export default async function connectToDb() {
 - then for use in function handler we should import our connectToDb and use in first line of handler
 
 ```javascript
-import connectToDb from "db.js";
+import connectToDb from "./configs/db.js";
 async function handler(req, res) {
   if (req.method !== "GET") {
     return false;
@@ -516,3 +519,134 @@ in real Next.js project we need 3 Routes:
 4. logout
 
 ---
+
+### 1. sign-in
+
+at first wo need create this path `api>auth` cause all of feature we want to add it's authenticate
+then
+create this files
+
+- `api>auth>signin.js`
+- `api>auth>signup.js`
+- `api>auth>me.js`
+- `api>auth>signout.js`
+
+---
+
+makes connection to Database :
+`configs>db.js`
+
+```javascript
+const mongoose = require("mongoose");
+async function connectToDB() {
+  try {
+    if (mongoose.connections[0].readyState) {
+      // if already connected to db
+      return false;
+    } else {
+      await mongoose.connect("databse-path/name");
+      console.log("connect to DB successfuly");
+    }
+  } catch (err) {
+    console.log("db connection has error ", err);
+  }
+}
+
+export default connectToDB;
+```
+
+---
+
+signin mechanism :
+`models>User.js`
+code in User.js :
+
+```javascript
+const mongoose = require("mongoose");
+
+const schema = mongoose.Schema(
+  {
+    fisrtname: {
+      type: String,
+      required: true,
+    },
+    lastname: {
+      type: String,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type:String
+      required:true
+    }
+  },
+  {
+    timestamps: true,
+  }
+);
+const model = mongoose.models.User || mongoose.model("User", schema);
+export default model;
+```
+
+---
+
+> so in sign-in progress we should check some important things :
+
+- we should check if the user is already exist in the database or not so if the username or email exist we should give him a warn and prevent user to sign-in into our database
+- we should validate user data that comes from client
+  one importatnt thing is when we recieve user password , we should not display user password as un-hashable password we should always hash user password already in database.(learn in next lecture)
+- then we should create one JWT for successful sign-in
+
+```javascript
+export async function handler(req, res) {
+  if (req.method !== "POST") {
+    return null;
+  }
+  try {
+    //connect to db
+    connectToDb(); //should import this file in configs>db.js
+
+    // get req.body
+    const { fisrtname, lastname, username, email, password } = req.body;
+
+    //simple validation
+    if (
+      !fisrtname.trim() ||
+      !lastname.trim() ||
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim()
+    ) {
+      return res.status(422).json("data is Not valid");
+    }
+
+    await UserModel.create({
+      firstname,
+      lastname,
+      username,
+      email,
+      password,
+      role: "USER",
+    });
+
+    return res.status(201).json({ message: "user create successfuly" });
+    //isUserExist?
+    //hash password
+    //generate JWT
+    //create
+  } catch (error) {
+    return res.status(500).json({ message: "unknown internal server error" });
+  }
+}
+```
