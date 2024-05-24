@@ -766,3 +766,34 @@ return res
   .status(201)
   .json({ message: "user Created successfuly" });
 ```
+
+---
+
+### set role Admin in Database
+
+- imagine you have a user system collection in database and you have 2 role in your Schema
+
+1. "ADMIN"
+2. "USER"
+
+- one system to set admin is
+
+#### first Signup is first ADMIN
+
+- one strategy is say that the first user when wants to signup into your website is your first ADMIN
+  then you can add more admin in the Dashboard , ok?
+
+```javascript
+const user = await model.find({}); // return Array
+
+await UserModel.create({
+  firstname,
+  lastname,
+  username,
+  email,
+  password: hashedPassVar,
+  role: user.length > 0 ? "USER" : "ADMIN",
+});
+```
+
+---
