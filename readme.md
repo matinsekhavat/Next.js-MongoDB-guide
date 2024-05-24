@@ -733,3 +733,36 @@ export function generateToken(data) {
   return token;
 }
 ```
+
+---
+
+### save token in cookies as HttpOnly
+
+- it's better to back-end developr handle storing tokens in cookies in server and not sent cookis as a response to the client
+- for this we use a package called <a href="https://www.npmjs.com/package/cookie">Cookies</a>
+
+##### HTTTP Only
+
+- HTTTP Only means we can not directly access to the token in cookies in the client side we always access to that in server for better security
+
+1. npm i cookie
+
+- so where we should set?
+
+- when we want to `return res.json` to tell as response the signup user successfuly done
+  but how?
+
+```javascript
+import { serialize } from "cookie";
+return res
+  .setHeader(
+    "Set-Cookie",
+    serialize("token", token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60 * 24, //  second
+    })
+  )
+  .status(201)
+  .json({ message: "user Created successfuly" });
+```
