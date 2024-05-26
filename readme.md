@@ -808,3 +808,11 @@ await UserModel.create({
 2. convert hashed password to readable password
 3. generate password
 4. ...
+
+---
+
+### convert hashed password to readable password
+
+in prev lecture we understand that we could not save user passwword in mySQL database as readable password , so we should convert to hashed password in sign-up step.
+so now in signin process it's time to convert and compare user hashed password into the readbale password
+so we gonna to make utils file for that and verify userPassword with req.body.password that comes frm client side
