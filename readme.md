@@ -800,7 +800,7 @@ await UserModel.create({
 
 ### 2. sign-in
 
-- in this senario usr can login in to the site with _userName_ || _email_ && _password_
+- in this senario user can login in to the site with _userName_ || _email_ && _password_
   we gonna to learn about some task for when user wants to log in to his account.
   for example :
 
