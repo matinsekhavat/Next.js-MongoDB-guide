@@ -816,3 +816,46 @@ await UserModel.create({
 in prev lecture we understand that we could not save user passwword in mySQL database as readable password , so we should convert to hashed password in sign-up step.
 so now in signin process it's time to convert and compare user hashed password into the readbale password
 so we gonna to make utils file for that and verify userPassword with req.body.password that comes frm client side
+
+- first we should check we have any username or email with the user sent to server or not?
+  if not return 404 error and say we dont have any user with this datas.
+
+```javascript
+import { compare } from "bcryptjs"; // return promise
+
+export async function verifyPassword(password, hashedPassword) {
+  // compare method accept to arguments to see first params is equal to second params or not?
+  // 1. s: string => readable password comes from client
+  // 2. hash: string => unreadable(hashed) password that we recieve from server
+  const isPasswordValid = await compare(password, hashedPassword);
+  return isPasswordValid;
+}
+```
+
+- the first argument we can access in req.body it's simple
+- so how to access to the second argument? =>
+
+```javascript
+const user = await userModel.findOne({
+  $or: [{ username: identifire }, { email: identifire }],
+});
+
+// then say
+const isPasswordValid = await verifyPassword(req.body.password, user.password);
+if (!isPasswordValid) {
+  return res.status(422).json({ message: "username or password is incorrect" });
+}
+
+const token = generateToken({ email: user.email });
+
+return res.setHeader(
+  "Set-Cookie",
+  serialize("token", token, {
+    httpOnly: true,
+    path: "/",
+    maxAge: 60 * 24 * 24,
+  })
+    .status(201)
+    .json({ message: "" })
+);
+```
