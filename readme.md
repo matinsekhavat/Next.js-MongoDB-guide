@@ -797,3 +797,7 @@ await UserModel.create({
 ```
 
 ---
+
+### 2.sign-in
+
+- in this senario usr can login in to the site with _userName_ || _email_ && _password_
