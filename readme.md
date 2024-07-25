@@ -263,6 +263,13 @@ teacher : {
  ref:"Teacher"
  required :true
 }
+
+for make relation with id in other file do this
+      const newProfile = await profileModel.create({
+      title,
+      description,
+      userId: new Types.ObjectId(user._id),
+    });
 ```
 
 - here ref means this ObjectId is for which models?
